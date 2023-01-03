@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HidanganController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,18 @@ Route::controller(LoginController::class)->group(function () {
     Route::post('/logout', 'logout')->name('logout');
 });
 
-Route::controller(DashboardController::class)->group(function () {
-    Route::get('/dashboard', 'index')->name('dashboard');
+Route::middleware(['admin'])->group(function () {
+    Route::prefix('dashboard')->group(function () {
+            Route::controller(DashboardController::class)->group(function () {
+                Route::get('/', 'index')->name('dashboard.index');
+            });
+        });
+});
+Route::middleware(['admin'])->group(function () {
+    Route::controller(HidanganController::class)->group(function () {
+        Route::get('/hidangan', 'index')->name('dashboard.hidangan');
+        Route::post('/hidangan/store', 'store')->name('dashboard.hidangan.store');
+        Route::get('/hidangan/edit/{id}', 'edit')->name('dashboard.hidangan.edit');
+        Route::patch('/hidangan/update', 'update')->name('dashboard.hidangan.update');
+    });
 });
