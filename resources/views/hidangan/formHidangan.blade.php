@@ -26,3 +26,7 @@
     <label for="judul">Harga Hidangan</label>
     <input type="text" class="form-control" name="harga_hidangan" id="harga_hidangan" placeholder="Harga Hidangan" />
 </div>
+<div class="form-group">
+    <label for="judul">Stok Hidangan Perhari</label>
+    <input type="text" class="form-control" name="stok_hidangan" id="stok_hidangan" placeholder="Stok Hidangan Perhari" />
+</div>

@@ -83,6 +83,13 @@
                 title: "{{Session::get('message')}}"
             })
             break;
+            case 'error':
+                Toast.fire({
+                type: 'error',
+                icon: 'error',
+                title: "{{Session::get('message')}}"
+            })
+            break;
     }
     @endif
     @if ($errors->any())

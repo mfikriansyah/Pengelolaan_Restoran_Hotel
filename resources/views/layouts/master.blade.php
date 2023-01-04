@@ -5,6 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <title>Skydash Admin</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="{{asset('vendors/feather/feather.css')}}">
@@ -13,7 +14,7 @@
   <!-- endinject -->
   <!-- Plugin css for this page -->
   <link rel="stylesheet" href="{{asset('vendors/ti-icons/css/themify-icons.css')}}">
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.13.1/datatables.min.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.13.1/fc-4.2.1/fh-3.3.1/r-2.4.0/datatables.min.css"/>
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="{{asset('css/style.css')}}">
@@ -58,16 +59,16 @@
   <!-- inject:js -->
   <script src="{{asset('js/off-canvas.js')}}"></script>
   <script src="{{asset('js/hoverable-collapse.js')}}"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.13.1/datatables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.13.1/fc-4.2.1/fh-3.3.1/r-2.4.0/datatables.min.js"></script>
   <script src="{{asset('js/template.js')}}"></script>
   <script src="{{asset('js/settings.js')}}"></script>
   <script src="{{asset('js/todolist.js')}}"></script>
-  <script src="{{asset('js/alerts.js')}}"></script>
   <!-- endinject -->
   <!-- Custom js for this page-->
   <script src="{{asset('js/dashboard.js')}}"></script>
   <script src="{{asset('js/Chart.roundedBarCharts.js')}}"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="{{asset('js/alerts.js')}}"></script>
   <!-- End custom js for this page-->
   <script>
     const Toast = Swal.mixin({
@@ -81,9 +82,9 @@
     switch (type) {
       case 'info':
         Toast.fire({
-          type: 'info',
-                    icon: 'info',
-                    title: "{{Session::get('message')}}"
+                type: 'info',
+                icon: 'info',
+                title: "{{Session::get('message')}}"
                   })
             break;
             case 'success':
@@ -107,15 +108,6 @@
                 title: "{{Session::get('message')}}"
               })
               break;
-              case 'dialog_error':
-                Swal.fire({
-                type: 'error',
-                icon: 'error',
-                title: "Oppssss",
-                text: "{{Session::get('message')}}",
-                timer:3000
-              })
-            break;
     }
     @endif
     @if ($errors->any())
@@ -128,19 +120,81 @@
     });
     @endforeach
     @endif
-    
-    @if ($errors->any())
-    Swal.fire({
-      icon: 'error',
-      title: "Oppsss",
-      text: "Terjadi suatu kesalahan",
-    })
-    @endif
-    $('#table-data').DataTable();
     let baseurl = "<?=url('/')?>";
     let fullURL = "<?=url()->full()?>";
     </script>
-@stack('js')
+    @stack('js')
+    <script>
+      $(document).ready(function(){
+        var table = $("#table-data").DataTable();
+        $(document).on("submit", "form", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: $(this).attr("action"),
+                    type: $(this).attr("method"),
+                    dataType: "JSON",
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success: function (response) {
+                        if ($.isEmptyObject(response.error)) {
+                            toast('success', response.success);
+                            $("#formTambahHidangan")[0].reset();
+                            $(".myModal").modal("hide");
+                            table.ajax.reload(null, false);
+                        } else {
+                            toast('errors', response.error)
+                            // printErrorMsg(response.error);
+                        }
+
+                    }
+                });
+
+            });
+            // function printErrorMsg (msg) {
+            //     $(".print-error-msg").find("ul").html('');
+            //     $(".print-error-msg").css('display','block');
+            //     $.each( msg, function( key, value ) {
+            //         $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+            //     });
+            // }
+      $(document).on("click", ".btn-hapus", function (e) {
+                e.preventDefault();
+                Swal.fire({
+                icon: 'warning',
+                html: 'Anda Akan Menghapus Data<br><strong>' + $(this).attr("id") + '</strong> ?',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                  if (result.isConfirmed) {
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                    url: $(this).attr("href"),
+                    type: "delete",
+                    dataType: "JSON",
+                    data: {
+                            _token: CSRF_TOKEN
+                        },
+                    success: function (response) {
+                        if ($.isEmptyObject(response.error)) {
+                            toast('success', response.success);
+                            table.ajax.reload(null, false);
+                        } else {
+                            toast('errors', response.error)
+                            // printErrorMsg(response.error);
+                        }
+                    }
+                });
+                  }
+              });
+
+            });
+      });
+    </script>
 </body>
 
 </html>

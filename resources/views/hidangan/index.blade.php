@@ -13,7 +13,7 @@
             </div>
         </div>
         <div id="tableKategori" class="table-responsive">
-            <table id="table-data" class="table table-hover">
+            <table id="table-data" class="table table-hover myTable">
                 <thead>
                     <tr class="text-center">
                         <th>NO</th>
@@ -22,30 +22,12 @@
                         <th>Deskripsi Hidangan</th>
                         <th>Gambar Hidangan</th>
                         <th>Harga Hidangan</th>
+                        <th>Stok Hidangan</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach($hidangans as $no => $hidangan)
-                        <tr class="text-center">
-                            <td>{{ $no+1 }}</td>
-                            <td>{{ $hidangan->nama_hidangan }}</td>
-                            <td>{{ $hidangan->jenis_hidangan }}</td>
-                            <td>{{ $hidangan->deskripsi_hidangan }}</td>
-                            @if($hidangan->gambar_hidangan != null)
-                                <td><img src="{{ asset('storage/gambar_hidangan/'.$hidangan->gambar_hidangan) }}"
-                                        alt=""></td>
-                            @else
-                                <td>[Belum Menggunggah Gambar]</td>
-                            @endif
-                            <td>{{ $hidangan->harga_hidangan }}</td>
-                            <td>
-                                <button type="button" data-toggle="modal" data-target="#modalEditHidangan"
-                                    id="btnEditHidangan" data-id="{{ $hidangan->id }}" class="btn btn-warning">
-                                    Edit</button>
-                            </td>
-                        </tr>
-                    @endforeach
+                <tbody id="table-body" class="text-center">
+
                 </tbody>
             </table>
         </div>
@@ -54,44 +36,56 @@
 @include('hidangan.modalEdit')
 @include('hidangan.modalCreate')
 @endsection
-    @push('js')
+@push('js')
     <script>
-        $(document).ready(function () {
-            $(document).on("submit", "form", function (e) {
-                e.preventDefault();
-                $.ajax({
-                    url: $(this).attr("action"),
-                    type: $(this).attr("method"),
-                    dataType: "JSON",
-                    data: new FormData(this),
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    success: function (response) {
-                        if ($.isEmptyObject(response.error)) {
-                            toast('success', response.success);
-                            document.getElementById("formTambahHidangan").reset();
-                            $('#table-data').load(document.URL + ' #table-data');
-                            $('#modalCreateHidangan').modal('hide');
-                        } else {
-                            toast('errors', response.error)
-                            // printErrorMsg(response.error);
+        $(function () {
+            var table = $(".myTable").DataTable({
+                processing: true,
+                ajax: "{{ route('dashboard.hidangan') }}",
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: 'nama_hidangan',
+                        name: 'Nama Hidangan'
+                    },
+                    {
+                        data: 'jenis_hidangan',
+                        name: 'Jenis Hidangan'
+                    },
+                    {
+                        data: 'deskripsi_hidangan',
+                        name: 'Deskripsi Hidangan'
+                    },
+                    {
+                        data: 'gambar_hidangan',
+                        name: 'Gambar Hidangan',
+                        "render": function (data) {
+                            if (data !== null) {
+                                return '<img src="storage/gambar_hidangan/' + data + '">'
+                            } else {
+                                return '[Gambar Tidak Tersedia]'
+                            }
                         }
-
-                    }
-                });
-
+                    },
+                    {
+                        data: 'harga_hidangan',
+                        name: 'Harga Hidangan'
+                    },
+                    {
+                        data: 'stok_hidangan',
+                        name: 'Stok Hidangan'
+                    },
+                    {
+                        data: 'aksi',
+                        name: 'Aksi'
+                    },
+                ],
             });
-            // function printErrorMsg (msg) {
-            //     $(".print-error-msg").find("ul").html('');
-            //     $(".print-error-msg").css('display','block');
-            //     $.each( msg, function( key, value ) {
-            //         $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
-            //     });
-            // }
-            $(document).on('click',"#btnEditHidangan",function () {
+
+            $(document).on('click', "#btnEditHidangan", function () {
                 let id = $(this).data('id');
-                console.log(id);
                 $("#image-area").empty();
                 $.ajax({
                     url: "{{ url('hidangan/edit') }}/" + id,
@@ -103,6 +97,9 @@
                             .jenis_hidangan + `">` + res.jenis_hidangan + `</option>`);
                         $('#harga_hidangan').val(res.harga_hidangan);
                         $('#deskripsi_hidangan').val(res.deskripsi_hidangan);
+                        $('#id_hidangan').val(res.id);
+                        $('#old_gambar_hidangan').val(res.gambar_hidangan);
+                        $('#stok_hidangan').val(res.stok_hidangan);
                         if (res.gambar_hidangan !== null) {
                             $('#image-area').append(
                                 `<img src="` + baseurl + `/storage/gambar_hidangan/` +
@@ -118,4 +115,4 @@
         });
 
     </script>
-    @endpush
+@endpush

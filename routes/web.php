@@ -39,5 +39,6 @@ Route::middleware(['admin'])->group(function () {
         Route::post('/hidangan/store', 'store')->name('dashboard.hidangan.store');
         Route::get('/hidangan/edit/{id}', 'edit')->name('dashboard.hidangan.edit');
         Route::patch('/hidangan/update', 'update')->name('dashboard.hidangan.update');
+        Route::delete('/hidangan/delete/{id}', 'delete')->name('dashboard.hidangan.delete');
     });
 });
