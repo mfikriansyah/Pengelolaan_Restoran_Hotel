@@ -82,28 +82,24 @@
     switch (type) {
       case 'info':
         Toast.fire({
-                type: 'info',
                 icon: 'info',
                 title: "{{Session::get('message')}}"
                   })
             break;
             case 'success':
               Toast.fire({
-                type: 'success',
                 icon: 'success',
                 title: "{{Session::get('message')}}"
               })
               break;
               case 'warning':
                 Toast.fire({
-                type: 'warning',
                 icon: 'warning',
                 title: "{{Session::get('message')}}"
             })
             break;  
             case 'error':
               Toast.fire({
-                type: 'error',
                 icon: 'error',
                 title: "{{Session::get('message')}}"
               })
@@ -113,7 +109,6 @@
     @if ($errors->any())
     @foreach($errors->all() as $error)
     Swal.fire({
-        type: 'error',
         icon: 'error',
         title: "Oppsss",
         text: "{{ $error }}",
@@ -125,7 +120,7 @@
     </script>
     @stack('js')
     <script>
-      $(document).ready(function(){
+      $(function(){
         var table = $("#table-data").DataTable();
         $(document).on("submit", "form", function (e) {
                 e.preventDefault();
@@ -140,7 +135,7 @@
                     success: function (response) {
                         if ($.isEmptyObject(response.error)) {
                             toast('success', response.success);
-                            $("#formTambahHidangan")[0].reset();
+                            $("form")[0].reset();
                             $(".myModal").modal("hide");
                             table.ajax.reload(null, false);
                         } else {
