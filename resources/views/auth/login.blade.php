@@ -65,7 +65,6 @@
   <script src="{{asset('js/todolist.js')}}"></script>
   <!-- endinject -->
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  @yield('script')
   <!-- End custom js for this page-->
   <script>
     const Toast = Swal.mixin({
@@ -77,13 +76,6 @@
     @if(Session::has('message'))
     var type = "{{Session::get('alert-type')}}";
     switch (type) {
-            case 'info':
-                Toast.fire({
-                    type: 'info',
-                    icon: 'info',
-                    title: "{{Session::get('message')}}"
-                })
-            break;
             case 'success':
                 Toast.fire({
                 type: 'success',
@@ -91,27 +83,11 @@
                 title: "{{Session::get('message')}}"
             })
             break;
-            case 'warning':
-                Toast.fire({
-                type: 'warning',
-                icon: 'warning',
-                title: "{{Session::get('message')}}"
-            })
-            break;  
             case 'error':
                 Toast.fire({
                 type: 'error',
                 icon: 'error',
                 title: "{{Session::get('message')}}"
-            })
-            break;
-            case 'dialog_error':
-                Swal.fire({
-                type: 'error',
-                icon: 'error',
-                title: "Oppssss",
-                text: "{{Session::get('message')}}",
-                timer:3000
             })
             break;
     }
@@ -132,9 +108,6 @@
         text: "Terjadi suatu kesalahan",
     })
     @endif
-    $('#table-data').DataTable();
-    let baseurl = "<?=url('/')?>";
-    let fullURL = "<?=url()->full()?>";
   </script>
 </body>
 
