@@ -1,11 +1,54 @@
-// to get current year
-function getYear() {
-    var currentDate = new Date();
-    var currentYear = currentDate.getFullYear();
-    document.querySelector("#displayYear").innerHTML = currentYear;
-}
 
-getYear();
+// search
+    var formSearch = document.getElementById('formItem');
+    formSearch.addEventListener("submit", function(event){
+        event.preventDefault();
+        var keyword = document.getElementById('keyword').value;
+        var search = document.getElementsByClassName(keyword)
+        console.log(keyword)
+        console.log(search)
+        if(search.length !== 0){
+            $grid.isotope({
+                filter: search
+            })
+        }else{
+            $grid.isotope({
+                filter: keyword
+            })
+        }
+    });
+    var $grid = $(".grid").isotope({
+        itemSelector: ".all",
+        percentPosition: false,
+        masonry: {
+            columnWidth: ".all"
+        }
+    })
+
+    //tambah keranjang
+    var keranjang = document.getElementById('cart');
+    var keranjangNumber = keranjang.value;
+
+    function tambahKeranjang(){
+        keranjangNumber++;
+        if (keranjangNumber > 9){
+            keranjang.innerHTML = `<i class="fas fa-shopping-cart"></i>(9+)` 
+        }else
+        keranjang.innerHTML = `<i class="fas fa-shopping-cart"></i>(${keranjangNumber})`
+    }
+// function filter() {
+//     var value, name, profile;
+//     value = document.getElementById("value").value.toUpperCase();
+//     profile = document.getElementsByClassName("all");
+//     for (var i = 0; i < profile.length; i++) {
+//         name = profile[i].getElementsByClassName("name");
+//         if (name[0].innerHTML.toUpperCase().indexOf(value) > -1) {
+//             profile[i].style.display = "flex"
+//         } else {
+//             profile[i].style.display = "none"
+//         }
+//     }
+// }
 
 
 // isotope js
@@ -30,9 +73,9 @@ $(window).on('load', function () {
 });
 
 // nice select
-$(document).ready(function() {
+$(document).ready(function () {
     $('select').niceSelect();
-  });
+});
 
 /** google_map js **/
 function myMap() {
@@ -68,3 +111,11 @@ $(".client_owl-carousel").owlCarousel({
         }
     }
 });
+// to get current year
+function getYear() {
+    var currentDate = new Date();
+    var currentYear = currentDate.getFullYear();
+    document.querySelector("#displayYear").innerHTML = currentYear;
+}
+
+getYear();

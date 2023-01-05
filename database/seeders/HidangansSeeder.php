@@ -56,7 +56,7 @@ class HidangansSeeder extends Seeder
                 'gambar_hidangan' => 'Es_Krim_3_Rasa.png'
             ],
             [
-                'nama_hidangan' => 'Ayam Geprek',
+                'nama_hidangan' => 'Nasi Ayam Geprek',
                 'harga_hidangan' => '25000',
                 'stok_hidangan' => '50',
                 'jenis_hidangan' => 'Makanan Berat',
