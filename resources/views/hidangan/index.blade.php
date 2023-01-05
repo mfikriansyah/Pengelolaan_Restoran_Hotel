@@ -15,7 +15,7 @@
         <div id="tableKategori" class="table-responsive">
             <table id="table-data" class="table table-hover myTable">
                 <thead>
-                    <tr class="text-center">
+                    <tr>
                         <th>NO</th>
                         <th>Nama Hidangan</th>
                         <th>Jenis Hidangan</th>
@@ -26,7 +26,7 @@
                         <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="table-body" class="text-center">
+                <tbody id="table-body">
 
                 </tbody>
             </table>
@@ -56,16 +56,20 @@
                     },
                     {
                         data: 'deskripsi_hidangan',
-                        name: 'Deskripsi Hidangan'
+                        name: 'Deskripsi Hidangan',
+                        "render": function (data) {
+                            var deskripsi = data.substr(0,50);
+                            return deskripsi;
+                        }
                     },
                     {
                         data: 'gambar_hidangan',
                         name: 'Gambar Hidangan',
                         "render": function (data) {
                             if (data !== null) {
-                                return '<img src="storage/gambar_hidangan/' + data + '">'
+                                return '<img class="" src="storage/gambar_hidangan/' + data + '">';
                             } else {
-                                return '[Gambar Tidak Tersedia]'
+                                return '[Gambar Tidak Tersedia]';
                             }
                         }
                     },

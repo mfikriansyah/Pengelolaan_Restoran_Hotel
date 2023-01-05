@@ -12,7 +12,7 @@
                 <div class="alert alert-danger print-error-msg" style="display:none">
                     <ul></ul>
                 </div>
-                <form name="form" class="myForm" method="post"
+                <form name="form" method="post"
                     action="{{ route('dashboard.hidangan.update') }}" id="formEditHidangan"
                     enctype="multipart/form-data">
                     @method('patch')
