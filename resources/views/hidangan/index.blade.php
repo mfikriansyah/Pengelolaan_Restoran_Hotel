@@ -63,7 +63,7 @@
                         name: 'Gambar Hidangan',
                         "render": function (data) {
                             if (data !== null) {
-                                return '<img src="images/hidangan/' + data + '">'
+                                return '<img src="storage/gambar_hidangan/' + data + '">'
                             } else {
                                 return '[Gambar Tidak Tersedia]'
                             }
@@ -102,7 +102,7 @@
                         $('#stok_hidangan').val(res.stok_hidangan);
                         if (res.gambar_hidangan !== null) {
                             $('#image-area').append(
-                                `<img src="` + baseurl + `/images/hidangan/` +
+                                `<img src="` + baseurl + `/storage/gambar_hidangan/` +
                                 res.gambar_hidangan + `" width="200px"/>`
                             );
                         } else {

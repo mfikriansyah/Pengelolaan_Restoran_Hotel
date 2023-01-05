@@ -135,7 +135,7 @@
                     success: function (response) {
                         if ($.isEmptyObject(response.error)) {
                             toast('success', response.success);
-                            $("form")[0].reset();
+                            $(".myForm")[0].reset();
                             $(".myModal").modal("hide");
                             table.ajax.reload(null, false);
                         } else {

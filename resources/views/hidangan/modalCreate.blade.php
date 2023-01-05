@@ -11,7 +11,7 @@
                 <div class="alert alert-danger print-error-msg" style="display:none">
                     <ul></ul>
                 </div>
-                <form name="form" action="{{route('dashboard.hidangan.store')}}" method="post" id="formTambahHidangan" 
+                <form name="form" class="myForm" action="{{route('dashboard.hidangan.store')}}" method="post" id="formTambahHidangan" 
                 enctype="multipart/form-data">
                     @csrf
                     @include('hidangan.formHidangan')
