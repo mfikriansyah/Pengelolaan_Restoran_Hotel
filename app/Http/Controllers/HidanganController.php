@@ -50,7 +50,7 @@ class HidanganController extends Controller
             $input  = $request->all();
             if(!empty($input['gambar_hidangan'])){
                 $input['gambar_hidangan'] = time().'.'.$request->file('gambar_hidangan')->extension();
-                $request->file('gambar_hidangan')->storeAs('public/gambar_hidangan', $input['gambar_hidangan']);
+                $request->file('gambar_hidangan')->storeAs('public/images/hidangan', $input['gambar_hidangan']);
                 Hidangan::create($input);
             }else{
                 $input['gambar_hidangan'] = $kosong;
@@ -79,8 +79,8 @@ class HidanganController extends Controller
         if ($validator->passes()) {
             if(!empty($input['gambar_hidangan'])){
                 $filter['gambar_hidangan'] = time().'.'.$request->file('gambar_hidangan')->extension();
-                $request->file('gambar_hidangan')->storeAs('public/gambar_hidangan', $filter['gambar_hidangan']);
-                Storage::delete('public/gambar_hidangan/'.$input['old_gambar_hidangan']);
+                $request->file('gambar_hidangan')->storeAs('public/images/hidangan', $filter['gambar_hidangan']);
+                Storage::delete('public/images/hidangan/'.$input['old_gambar_hidangan']);
                 DB::table('hidangans')->where('id', $input['id'])->update($filter);
             }else{
                 $input['gambar_hidangan'] = $kosong;
@@ -94,7 +94,7 @@ class HidanganController extends Controller
     public function delete($id)
     {
         $hidangan = Hidangan::findOrFail($id);
-        Storage::delete('public/gambar_hidangan/'.$hidangan->gambar_hidangan);
+        Storage::delete('public/images/hidangan/'.$hidangan->gambar_hidangan);
         $hidangan->delete();
         return response()->json(['success'=>'Berhasil Menghapus.']);
     }
