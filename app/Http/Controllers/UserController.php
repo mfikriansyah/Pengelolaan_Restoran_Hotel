@@ -36,7 +36,8 @@ class UserController extends Controller
                 "nama" => $hidangan->nama_hidangan,
                 "jumlah" => 1,
                 "harga" => $hidangan->harga_hidangan,
-                "gambar" => $hidangan->gambar_hidangan
+                "gambar" => $hidangan->gambar_hidangan,
+                "keterangan" => null
             ];
         }
         session()->put('cart', $cart);
@@ -55,8 +56,14 @@ class UserController extends Controller
             $cart[$request->id]["jumlah"] = $request->jumlah;
             session()->put('cart', $cart);
             // session()->flash('success', 'Product removed successfully');
+            return response()->json(['success'=>'Berhasil Mengubah Jumlah Pesanan.']);
+        }else if($request->id && $request->keterangan){
+            $cart = session()->get('cart');
+            $cart[$request->id]["keterangan"] = $request->keterangan;
+            session()->put('cart', $cart);
+            // session()->flash('success', 'Product removed successfully');
+            return response()->json(['success'=>'Berhasil Mengubah Keterangan Pesanan.']);
         }
-        return response()->json(['success'=>'Berhasil Mengubah Jumlah Pesanan.']);
     }
   
     /**
@@ -75,5 +82,14 @@ class UserController extends Controller
             // session()->flash('success', 'Product removed successfully');
         }
         return response()->json(['success'=>'Berhasil Menghapus Pesanan.']);
+    }
+
+    public function checkout()
+    {
+        return view('user.checkout');
+    }
+    public function checkout_process()
+    {
+
     }
 }

@@ -50,7 +50,7 @@
         <header class="header_section">
             <div class="container">
                 <nav class="navbar navbar-expand-lg custom_nav-container ">
-                    <a class="navbar-brand" href="index.html">
+                    <a class="navbar-brand" href="{{url('/')}}">
                         <span>
                             Feane
                         </span>
@@ -169,8 +169,8 @@
     <!-- food section -->
     <section class="food_section layout_padding-bottom">
         <div class="container">
-    @yield('content')
-    </div>
+            @yield('content')
+        </div>
     </section>
     <!-- end food section -->
 
@@ -285,10 +285,11 @@
   <!-- End Google Map --> --}}
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="{{asset('js/alerts.js')}}"></script>
+  <script src="{{asset('js/ajax.js')}}"></script>
   <!-- End custom js for this page-->
     @stack('js')
     <script type="text/javascript">
-        $(".update-cart").change(function (e) {
+        $(".jumlah").change(function (e) {
             e.preventDefault();
       
             var ele = $(this);
@@ -300,6 +301,28 @@
                     _token: '{{ csrf_token() }}', 
                     id: ele.parents("tr").attr("data-id"), 
                     jumlah: ele.parents("tr").find(".jumlah").val()
+                },
+                success: function (response) {
+                    toast('success', response.success);
+                    // $('#cart').load(document.URL + ' #cart');
+                        setTimeout(function() {
+                            window.location.reload();
+                        },1000);
+                }
+            });
+        });
+        $(".keterangan").change(function (e) {
+            e.preventDefault();
+      
+            var ele = $(this);
+      
+            $.ajax({
+                url: '{{ route('update.cart') }}',
+                method: "patch",
+                data: {
+                    _token: '{{ csrf_token() }}', 
+                    id: ele.parents("tr").attr("data-id"), 
+                    keterangan: ele.parents("tr").find(".keterangan").val()
                 },
                 success: function (response) {
                     toast('success', response.success);
@@ -332,6 +355,38 @@
                         _token: '{{ csrf_token() }}', 
                         id: id
                     },
+                    success: function (response) {
+                        toast('success', response.success);
+                        //$('#cart').load(document.URL + ' #cart');
+                        // ele.parents("tr").attr("data-id")
+                        setTimeout(function() {
+                            window.location.reload();
+                        },1500);
+                    }
+                });
+            }
+        });
+    });
+    $(".pay-btn").click(function (e) {
+            e.preventDefault();
+            var form = $("#checkout-form");
+      
+            var ele = $(this);
+                    Swal.fire({
+                    icon: 'warning',
+                    html: 'Ini adalah halaman terakhir <br> <strong> Konfirmasi Untuk Order </strong>?',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                      if (result.isConfirmed) {
+                            $.ajax({
+                    url: '{{ route('checkout-process') }}',
+                    method: "POST",
+                    data: new FormData(form),
+                    dataType: JSON,
                     success: function (response) {
                         toast('success', response.success);
                         //$('#cart').load(document.URL + ' #cart');

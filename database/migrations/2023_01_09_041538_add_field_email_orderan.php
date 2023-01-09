@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddFieldStokHidangans extends Migration
+class AddFieldEmailOrderan extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddFieldStokHidangans extends Migration
      */
     public function up()
     {
-        Schema::table('hidangans', function (Blueprint $table) {
-            $table->char("stok_hidangan", 3)->after("harga_hidangan")->default("50");
+        Schema::table('orderans', function (Blueprint $table) {
+            $table->char('email', 50);
         });
     }
 
@@ -25,8 +25,8 @@ class AddFieldStokHidangans extends Migration
      */
     public function down()
     {
-        Schema::table('hidangans', function (Blueprint $table) {
-            $table->dropColumn('stok_hidangan');
+        Schema::table('orderans', function (Blueprint $table) {
+            $table->dropColumn('email');
         });
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HidanganController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,8 @@ Route::controller(UserController::class)->group(function () {
             Route::get('add-to-cart/{id}', [UserController::class, 'addToCart'])->name('add.to.cart');
             Route::patch('update-cart', [UserController::class, 'update'])->name('update.cart');
             Route::delete('remove-from-cart', [UserController::class, 'remove'])->name('remove.from.cart');
+            Route::get('checkout', [UserController::class, 'checkout'])->name('checkout');
+            Route::post('checkout-process', [UserController::class, 'checkout_process'])->name('checkout-process');
         });
 });
 
@@ -46,5 +49,10 @@ Route::middleware(['admin'])->group(function () {
         Route::get('/hidangan/edit/{id}', 'edit')->name('dashboard.hidangan.edit');
         Route::patch('/hidangan/update', 'update')->name('dashboard.hidangan.update');
         Route::delete('/hidangan/delete/{id}', 'delete')->name('dashboard.hidangan.delete');
+    });
+});
+Route::middleware(['admin'])->group(function () {
+    Route::controller(OrderanController::class)->group(function () {
+        Route::get('/orderan', 'index')->name('dashboard.orderan');
     });
 });
