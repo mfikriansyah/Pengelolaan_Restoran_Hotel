@@ -1,9 +1,9 @@
     function toast(tipe, pesan) {
         if (tipe == 'success') {
             Swal.fire({
-                title: pesan,
+                text: pesan,
                 icon: 'success',
-                timer: 2000
+                timer: 1800
             })
         } else if (tipe == 'info') {
             Swal.fire({
