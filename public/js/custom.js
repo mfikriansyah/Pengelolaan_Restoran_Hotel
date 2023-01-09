@@ -1,12 +1,11 @@
 
 // search
-    var formSearch = document.getElementById('formItem');
-    formSearch.addEventListener("submit", function(event){
+$(document).ready(function(){
+    $('#btn-search').click(function (event){
+        var formSearch = document.getElementById('formItem');
         event.preventDefault();
         var keyword = document.getElementById('keyword').value;
         var search = document.getElementsByClassName(keyword)
-        console.log(keyword)
-        console.log(search)
         if(search.length !== 0){
             $grid.isotope({
                 filter: search
@@ -24,18 +23,8 @@
             columnWidth: ".all"
         }
     })
+});
 
-    //tambah keranjang
-    var keranjang = document.getElementById('cart');
-    var keranjangNumber = keranjang.value;
-
-    function tambahKeranjang(){
-        keranjangNumber++;
-        if (keranjangNumber > 9){
-            keranjang.innerHTML = `<i class="fas fa-shopping-cart"></i>(9+)` 
-        }else
-        keranjang.innerHTML = `<i class="fas fa-shopping-cart"></i>(${keranjangNumber})`
-    }
 // function filter() {
 //     var value, name, profile;
 //     value = document.getElementById("value").value.toUpperCase();

@@ -91,7 +91,54 @@
                             <a href="" class="user_link">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                             </a>
-                            <button class="btn btn-outline-light" id="cart"><i class="fas fa-shopping-cart"></i>(0)</button>
+                            <div class="dropdown">
+                            @if(Route::has('login'))
+                            @auth
+                            <button class="btn btn-outline-light dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+                                <span class="badge badge-pill badge-secondary">{{ count((array) session('cart')) }}</span>
+                            </button>
+                            @else
+                            <button data-toggle="modal" data-target="#modalLogin" class="btn btn-outline-light" id="cart"><i class="fas fa-shopping-cart" aria-hidden="true"></i>
+                                <span class="badge badge-pill badge-secondary">{{ count((array) session('cart')) }}</span>
+                            </button>
+                            @endauth
+                            @endif
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <div class="row total-header-section">
+                                        <div class="col-lg-6 col-sm-6 col-6">
+                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i> <span class="badge badge-pill badge-danger">{{ count((array) session('cart')) }}</span>
+                                        </div>
+                                        @php $total = 0 @endphp
+                                        @foreach((array) session('cart') as $id => $details)
+                                            @php $total += $details['harga'] * $details['jumlah'] @endphp
+                                        @endforeach
+                                        <div class="col-lg-6 col-sm-6 col-6 total-section text-right">
+                                            <p>Total: <span class="text-info">Rp. {{ $total }}</span></p>
+                                        </div>
+                                    </div>
+                                    @if(session('cart'))
+                                        @foreach(session('cart') as $id => $details)
+                                            <div class="row cart-detail">
+                                                <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
+                                                    <img src="{{asset('storage/gambar_hidangan/'.$details['gambar'])}}" />
+                                                </div>
+                                                <div class="col-lg-8 col-sm-8 col-8 cart-detail-Hidangan">
+                                                    <p>{{ $details['nama'] }}</p>
+                                                    <span class="Harga text-info">Rp. {{ $details['harga'] }} </span> <span class="count text-secondary">     
+                                                        Jumlah: <strong> {{ $details['jumlah'] }} </strong>&nbsp; 
+                                                        <button data-id="{{$id}}" class="float-right btn btn-danger btn-sm remove-from-cart" id="{{ $details['nama'] }}"><i class="fa fa-trash"></i></button></span>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                    <div class="row">
+                                        <div class="col-12 text-center checkout">  
+                                            <a href="{{ route('cart') }}" class="text-dark badge badge-primary order_online">View all</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <form class="form-inline">
                                 <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
                                     <i class="fa fa-search" aria-hidden="true"></i>
@@ -116,77 +163,15 @@
         </header>
         <!-- end header section -->
     </div>
+  
+<br/>
 
     <!-- food section -->
-
-    <section class="food_section layout_padding">
+    <section class="food_section layout_padding-bottom">
         <div class="container">
-            <div class="heading_container heading_center">
-                <h2>
-                    Our Menu
-                </h2>
-                <form class="form-inline mt-4" id="formItem">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search"  id="keyword" aria-label="Search">
-                    <button class="btn btn-outline-secondary my-2 my-sm-0 nav_search-btn" type="submit">
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                    </button>
-                </form>
-            </div>
-            <ul class="filters_menu">
-                <li class="active" data-filter="*">All</li>
-                <li data-filter=".Berat">Makanan Berat</li>
-                <li data-filter=".Dingin">Minuman Dingin</li>
-                <li data-filter=".Panas">Minuman Panas</li>
-                <li data-filter=".Ringan">Makanan Ringan</li>
-                <li data-filter=".Penutup">Makanan Penutup</li>
-            </ul>
-
-            <div class="filters-content">
-                <div class="row grid"> 
-                    @foreach($hidangans as $hidangan)
-                        <div id="{{ $hidangan->id }}" class="col-sm-6 col-lg-4 all {{ $hidangan->nama_hidangan }} {{ $hidangan->jenis_hidangan }}">
-                            <div class="box">
-                                <div>
-                                    <div class="img-box">
-                                        <img src="{{ asset('storage/gambar_hidangan/'.$hidangan->gambar_hidangan) }}"
-                                            alt="">
-                                    </div>
-                                    <div class="detail-box">
-                                        <h5 class="name">
-                                            {{ $hidangan->nama_hidangan }}
-                                        </h5>
-                                        <p>
-                                            {{ $hidangan->deskripsi_hidangan }}
-                                        </p>
-                                        <div class="options">
-                                            <h6>
-                                                Rp. {{ $hidangan->harga_hidangan }}
-                                            </h6>
-                                            @if(Route::has('login'))
-                                                @auth
-                                                    <button class="btn btn-dark" onclick="tambahKeranjang()"><i class="fas fa-shopping-cart"></i></button>
-                                                @else
-                                                    <button class="btn btn-dark" type="button" data-toggle="modal" data-target="#modalLogin">
-                                                        <i class="fas fa-shopping-cart"></i>
-                                                    </button>
-                                                @endauth
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-            <div class="btn-box">
-                <a href="">
-                    View More
-                </a>
-            </div>
-        </div>
+    @yield('content')
+    </div>
     </section>
-
     <!-- end food section -->
 
     <!-- footer section -->
@@ -298,6 +283,70 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
   </script>
   <!-- End Google Map --> --}}
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="{{asset('js/alerts.js')}}"></script>
+  <!-- End custom js for this page-->
+    @stack('js')
+    <script type="text/javascript">
+        $(".update-cart").change(function (e) {
+            e.preventDefault();
+      
+            var ele = $(this);
+      
+            $.ajax({
+                url: '{{ route('update.cart') }}',
+                method: "patch",
+                data: {
+                    _token: '{{ csrf_token() }}', 
+                    id: ele.parents("tr").attr("data-id"), 
+                    jumlah: ele.parents("tr").find(".jumlah").val()
+                },
+                success: function (response) {
+                    toast('success', response.success);
+                    // $('#cart').load(document.URL + ' #cart');
+                        setTimeout(function() {
+                            window.location.reload();
+                        },1000);
+                }
+            });
+        });
+        $(".remove-from-cart").click(function (e) {
+            e.preventDefault();
+            let id = $(this).data('id')
+      
+            var ele = $(this);
+                    Swal.fire({
+                    icon: 'warning',
+                    html: 'Anda Akan Membatalkan<br><strong>' + $(this).attr("id") + '</strong> ?',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                      if (result.isConfirmed) {
+                            $.ajax({
+                    url: '{{ route('remove.from.cart') }}',
+                    method: "DELETE",
+                    data: {
+                        _token: '{{ csrf_token() }}', 
+                        id: id
+                    },
+                    success: function (response) {
+                        toast('success', response.success);
+                        //$('#cart').load(document.URL + ' #cart');
+                        // ele.parents("tr").attr("data-id")
+                        setTimeout(function() {
+                            window.location.reload();
+                        },1500);
+                    }
+                });
+            }
+        });
+    });
+      
+    </script>
+    
 
 </body>
 

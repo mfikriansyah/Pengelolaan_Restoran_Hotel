@@ -24,6 +24,12 @@ Route::controller(LoginController::class)->group(function () {
 
 Route::controller(UserController::class)->group(function () {
     Route::get('/', 'index')->name('index');
+        Route::middleware(['auth'])->group(function () {
+            Route::get('cart', [UserController::class, 'cart'])->name('cart');
+            Route::get('add-to-cart/{id}', [UserController::class, 'addToCart'])->name('add.to.cart');
+            Route::patch('update-cart', [UserController::class, 'update'])->name('update.cart');
+            Route::delete('remove-from-cart', [UserController::class, 'remove'])->name('remove.from.cart');
+        });
 });
 
 Route::middleware(['admin'])->group(function () {
