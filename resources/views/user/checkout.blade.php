@@ -17,11 +17,11 @@
                             </td>
                             <td>
                                 <br> <span style="font-weight:bold">{{ $details['nama'] }}</span>
-                                <input type="hidden" name="nama_hidangan[]" value="{{ $details['nama'] }}">
+                                <input type="hidden" name="nama_hidangan[]" value="{{ $details['nama'] }} ({{ $details['jumlah'] }}x)">
                                 <br> Jumlah : {{ $details['jumlah'] }} <br> <span class="thin small">{{ $details['keterangan'] }} <br><br></span>
                                 <input type="hidden" name="keterangan[]" value="{{$details['keterangan']}}">
                             </td>
-
+                            
                         </tr>
                         <tr>
                             <td>
@@ -35,9 +35,9 @@
                 <hr/>
                 @endif
                 @php $total = 0 @endphp
-                    @foreach((array) session('cart') as $id => $details)
-                        @php $total += $details['harga'] * $details['jumlah'] @endphp
-                    @endforeach
+                @foreach((array) session('cart') as $id => $details)
+                @php $total += $details['harga'] * $details['jumlah'] @endphp
+                @endforeach
                 <div class="total">
                     <strong><h3><span style="float:left;">
                         TOTAL
@@ -112,7 +112,7 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                   if (result.isConfirmed) {
-                    // form.submit();
+                //    form.submit();
                     $.ajax({
                     url: "{{route ('checkout-process')}}",
                     type: "post",

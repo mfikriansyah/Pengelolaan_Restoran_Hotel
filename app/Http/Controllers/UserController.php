@@ -7,6 +7,7 @@ use App\Models\Hidangan;
 use Session;
 use Validator;
 use App\Models\Orderan;
+use Illuminate\Support\Arr;
 
 class UserController extends Controller
 {
@@ -98,9 +99,10 @@ class UserController extends Controller
         if ($validator->passes()) {
             $hidangan = "";
             $keterangan = "";
-                $input = $request->all();
+            $jumlah = "";
+            $input = $request->all();
                 foreach($input['nama_hidangan'] as $hid){
-                    $hidangan .= $hid . ",";
+                    $hidangan .= $hid .",";
                 }
                 foreach($input['keterangan'] as $ket){
                     if($ket == null){
