@@ -17,7 +17,9 @@
                             </td>
                             <td>
                                 <br> <span style="font-weight:bold">{{ $details['nama'] }}</span>
+                                <input type="hidden" name="nama_hidangan[]" value="{{ $details['nama'] }}">
                                 <br> Jumlah : {{ $details['jumlah'] }} <br> <span class="thin small">{{ $details['keterangan'] }} <br><br></span>
+                                <input type="hidden" name="keterangan[]" value="{{$details['keterangan']}}">
                             </td>
 
                         </tr>
@@ -42,6 +44,7 @@
                     </span>
                     <span style="float:right; text-align:right;">
                         Rp. {{ $total }}
+                        <input type="hidden" name="total_harga" value="{{$total}}" id="">
                     </span></h3></strong>
                 </div>
             </div>
@@ -83,8 +86,10 @@
                 </table>
                 Email
                 <p style="font-size: 10px">* For Invoice Order</p>
-                <input class="input-field" />
-                <button type="button" class="pay-btn">Checkout</button>
+                <input class="input-field" name="email" type="email"/>
+                <input type="hidden" name="no_kamar" value="{{Auth::user()->username}}">
+                <input type="hidden" name="status_order" id="" value="0">
+                <button type="button" id="pay-btn" class="pay-btn">Checkout</button>
             </form>
             </div>
 
@@ -92,3 +97,43 @@
     </div>
 </div>
 @stop
+@push('js')
+<script>
+    $("#pay-btn").click(function (e) {
+        var form = event.target.form;
+        e.preventDefault();
+                Swal.fire({
+                icon: 'warning',
+                html: 'Ini adalah halaman terakhir <br> <strong> Konfirmasi Untuk Order </strong>?',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Order!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                  if (result.isConfirmed) {
+                    // form.submit();
+                    $.ajax({
+                    url: "{{route ('checkout-process')}}",
+                    type: "post",
+                    dataType: "JSON",
+                    data: $('#checkout-form').serialize(),
+                    success: function (response) {
+                        if ($.isEmptyObject(response.error)) {
+                            toast('success', response.success);
+                            setTimeout(function() {
+                                // window.location.replace("{{route('index')}}");
+                            window.location.reload();
+                        },1000);
+                        } else {
+                            toast('errors', response.error)
+                            // printErrorMsg(response.error);
+                        }
+                    }
+                });
+        }
+    });
+    });
+
+</script>
+@endpush

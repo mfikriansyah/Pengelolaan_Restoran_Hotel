@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Orderan extends Model
 {
     use HasFactory;
+    protected $guarded = [];
     // public function hidangan()
     // {
     //     return $this->hasMany(Hidangan::class, 'hidangan_id', 'id');

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Hidangan;
 use Session;
+use Validator;
+use App\Models\Orderan;
 
 class UserController extends Controller
 {
@@ -88,8 +90,32 @@ class UserController extends Controller
     {
         return view('user.checkout');
     }
-    public function checkout_process()
+    public function checkout_process(Request $request)
     {
-
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+        if ($validator->passes()) {
+            $hidangan = "";
+            $keterangan = "";
+                $input = $request->all();
+                foreach($input['nama_hidangan'] as $hid){
+                    $hidangan .= $hid . ",";
+                }
+                foreach($input['keterangan'] as $ket){
+                    if($ket == null){
+                        $keterangan .= 'default,';
+                    }else{
+                        $keterangan .= $ket . ",";
+                    }
+                }
+                $input['nama_hidangan'] = $hidangan;
+                $input['keterangan'] = $keterangan;
+        $input['created_at'] = NOW();
+        Orderan::create($input);
+            return response()->json(['success'=>'Order Berhasil.']);
+        }else{
+            return response()->json(['error'=>$validator->errors()->all()]);
+        }
     }
 }

@@ -68,9 +68,9 @@
                                 <a class="nav-link" href="{{ route('index') }}">Menu <span
                                         class="sr-only">(current)</span> </a>
                             </li>
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a class="nav-link" href="#">Book Table</a>
-                            </li>
+                            </li> --}}
                             @if(Route::has('login'))
                                 @auth
                                     <li class="nav-item">
@@ -367,39 +367,6 @@
             }
         });
     });
-    $(".pay-btn").click(function (e) {
-            e.preventDefault();
-            var form = $("#checkout-form");
-      
-            var ele = $(this);
-                    Swal.fire({
-                    icon: 'warning',
-                    html: 'Ini adalah halaman terakhir <br> <strong> Konfirmasi Untuk Order </strong>?',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, hapus!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                      if (result.isConfirmed) {
-                            $.ajax({
-                    url: '{{ route('checkout-process') }}',
-                    method: "POST",
-                    data: new FormData(form),
-                    dataType: JSON,
-                    success: function (response) {
-                        toast('success', response.success);
-                        //$('#cart').load(document.URL + ' #cart');
-                        // ele.parents("tr").attr("data-id")
-                        setTimeout(function() {
-                            window.location.reload();
-                        },1500);
-                    }
-                });
-            }
-        });
-    });
-      
     </script>
     
 
