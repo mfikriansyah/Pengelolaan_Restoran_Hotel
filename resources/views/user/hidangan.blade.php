@@ -2,9 +2,9 @@
 @section('content')
 
         <div class="heading_container heading_center">
-            <h2>
+            <h1>
                 Our Menu
-            </h2>
+            </h1>
             <form class="form-inline mt-4" id="formItem">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search"  id="keyword" aria-label="Search">
                 <button class="btn btn-outline-secondary my-2 my-sm-0 nav_search-btn" id="btn-search" type="submit">

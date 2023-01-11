@@ -69,6 +69,7 @@
   <script src="{{asset('js/Chart.roundedBarCharts.js')}}"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="{{asset('js/alerts.js')}}"></script>
+  <script src="{{asset('js/ajax.js')}}"></script>
   <!-- End custom js for this page-->
   <script>
     const Toast = Swal.mixin({
