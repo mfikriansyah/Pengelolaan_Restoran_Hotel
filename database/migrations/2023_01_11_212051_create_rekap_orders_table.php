@@ -16,7 +16,7 @@ class CreateRekapOrdersTable extends Migration
         Schema::create('rekap_orders', function (Blueprint $table) {
             $table->id();
             $table->char('no_kamar', 9);
-            $table->char('status_order', 1);
+            $table->char('status_order', 7);
             $table->char('nama_hidangan', 255);
             $table->decimal('total_harga');
             $table->char('email', 50);
