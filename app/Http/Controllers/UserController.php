@@ -132,6 +132,7 @@ class UserController extends Controller
         //     foreach($filter['id_hidangan'] as $no => $i){ 
         // }
         // return redirect()->back();
+        Session::forget('cart');
             return response()->json(['success'=>'Order Berhasil.']);
         }else{
             return response()->json(['error'=>$validator->errors()->all()]);

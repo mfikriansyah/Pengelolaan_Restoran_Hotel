@@ -27,7 +27,7 @@ class HidanganController extends Controller
                 data-target="#modalEditHidangan" class="btn btn-warning">Edit</button>';
                 $btn .= '<a href="hidangan/delete/'.$id->id.'"
                 id="'.$id->nama_hidangan.'" data-id="'.$id->id.' 
-                "data-toggle="tooltip" class="btn-hapus btn btn-danger">Delete</button>';
+                "data-toggle="tooltip" class="btn-hapus btn btn-danger">Delete</a>';
                 return $btn;
             })
             ->rawColumns(['aksi'])

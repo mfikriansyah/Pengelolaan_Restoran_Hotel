@@ -12,7 +12,7 @@
                 <hr />
             </div>
         </div>
-        <div id="tableKategori" class="table-responsive">
+        <div id="tableHidangan" class="table-responsive">
             <table id="table-data" class="table table-hover myTable">
                 <thead>
                     <tr>
