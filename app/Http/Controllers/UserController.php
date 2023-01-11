@@ -8,6 +8,7 @@ use Session;
 use Validator;
 use App\Models\Orderan;
 use Illuminate\Support\Arr;
+use DB;
 
 class UserController extends Controller
 {
@@ -36,6 +37,7 @@ class UserController extends Controller
             $cart[$id]['jumlah']++;
         } else {
             $cart[$id] = [
+                'id' => $hidangan->id,
                 "nama" => $hidangan->nama_hidangan,
                 "jumlah" => 1,
                 "harga" => $hidangan->harga_hidangan,
@@ -99,8 +101,8 @@ class UserController extends Controller
         if ($validator->passes()) {
             $hidangan = "";
             $keterangan = "";
-            $jumlah = "";
-            $input = $request->all();
+            $filter = $request->all();
+            $input = Arr::except($filter,['id_hidangan','jumlah']);
                 foreach($input['nama_hidangan'] as $hid){
                     $hidangan .= $hid .",";
                 }
@@ -113,8 +115,23 @@ class UserController extends Controller
                 }
                 $input['nama_hidangan'] = $hidangan;
                 $input['keterangan'] = $keterangan;
-        $input['created_at'] = NOW();
-        Orderan::create($input);
+                // dd($input['keterangan']);
+            Orderan::create($input);
+            $i = 0;
+            for ($i ; $i < count($request->jumlah);$i++) {
+                $jumlah = null;
+                $stok[$i] = Hidangan::where('id',$request->id_hidangan[$i])->pluck('stok_hidangan')->first();
+                $jumlah = $stok[$i] - $request->jumlah[$i];
+                DB::table('hidangans')->where('id', $request->id_hidangan[$i])->update([
+                    'stok_hidangan' => $jumlah,
+                ]);
+            }
+            // for($i = 0; $i<count($request->id_hidangan); $i++){
+            //     }
+                // dd($stokBaru[$i]);
+        //     foreach($filter['id_hidangan'] as $no => $i){ 
+        // }
+        // return redirect()->back();
             return response()->json(['success'=>'Order Berhasil.']);
         }else{
             return response()->json(['error'=>$validator->errors()->all()]);
