@@ -57,3 +57,7 @@ Route::middleware(['admin'])->group(function () {
         Route::post('/orderan/store', 'store')->name('dashboard.orderan.store');
     });
 });
+Route::get('/sentMail', function(){
+    $orderan = App\Models\Orderan::first();
+    return new App\Mail\Invoice($orderan);
+    });

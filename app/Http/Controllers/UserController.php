@@ -101,10 +101,14 @@ class UserController extends Controller
         if ($validator->passes()) {
             $hidangan = "";
             $keterangan = "";
+            $harga = "";
             $filter = $request->all();
             $input = Arr::except($filter,['id_hidangan','jumlah']);
                 foreach($input['nama_hidangan'] as $hid){
                     $hidangan .= $hid .",";
+                }
+                foreach($input['harga'] as $har){
+                    $harga .= $har .",";
                 }
                 foreach($input['keterangan'] as $ket){
                     if($ket == null){
@@ -115,6 +119,7 @@ class UserController extends Controller
                 }
                 $input['nama_hidangan'] = $hidangan;
                 $input['keterangan'] = $keterangan;
+                $input['harga'] = $harga;
                 // dd($input['keterangan']);
             Orderan::create($input);
             $i = 0;

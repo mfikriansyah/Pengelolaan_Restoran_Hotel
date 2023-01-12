@@ -27,6 +27,7 @@
                         <tr>
                             <td>
                                 <div class="price">Rp. {{ $details['harga'] * $details['jumlah'] }}</div>
+                                <input type="hidden" name="harga[]" value="{{ $details['harga'] * $details['jumlah'] }}">
                             </td>
                         </tr>
                     </tbody>
@@ -124,8 +125,8 @@
                         if ($.isEmptyObject(response.error)) {
                             toast('success', response.success);
                             setTimeout(function() {
-                                // window.location.replace("{{route('index')}}");
-                            window.location.reload();
+                                window.location.replace("{{route('index')}}");
+                            //window.location.reload();
                         },1000);
                         } else {
                             toast('errors', response.error)

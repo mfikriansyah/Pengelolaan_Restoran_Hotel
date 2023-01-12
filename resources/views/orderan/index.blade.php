@@ -14,6 +14,7 @@
                     <tr>
                         <th>NO</th>
                         <th>Nama Hidangan</th>
+                        <th>Harga</th>
                         <th>Keterangan</th>
                         <th>Nomor Kamar</th>
                         <th>Total Harga</th>
@@ -31,6 +32,9 @@
                             <td>{{$no+1}}</td>
                             <td>{{$orderan->nama_hidangan}}
                                 <input type="hidden" name="nama_hidangan" value="{{$orderan->nama_hidangan}}"/>
+                            </td>
+                            <td>{{$orderan->harga}}
+                                <input type="hidden" name="harga" value="{{$orderan->harga}}"/>
                             </td>
                             <td>{{$orderan->keterangan}}</td>
                             <td>{{$orderan->no_kamar}}
