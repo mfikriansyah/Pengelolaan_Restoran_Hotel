@@ -14,7 +14,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $data['hidangans'] = Hidangan::all();
+        $data['hidangans'] = Hidangan::where('status', 1)->get();
         return view('user.hidangan')->with($data);
     }
     public function cart()
