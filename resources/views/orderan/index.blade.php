@@ -4,117 +4,78 @@
     <div class="col-md-12 grid-margin">
         <div class="row">
             <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                <h3 class="font-weight-bold">Manage Hidangan</h3>
-                <hr />
-                <button class="btn btn-sm btn-primary create" name="button" data-toggle="modal"
-                    data-target="#modalCreateHidangan"><i class="fa fa-plus"></i>
-                    Tambah Data</button>
-                <hr />
+                <h3 class="font-weight-bold">Manage Orderan Hari Ini</h3>
+                <hr/>
             </div>
         </div>
-        <div id="tableKategori" class="table-responsive">
+        <div id="tableOrderan" class="table-responsive">
             <table id="table-data" class="table table-hover myTable">
-                <thead>
+                <thead  class="text-center">
                     <tr>
                         <th>NO</th>
                         <th>Nama Hidangan</th>
-                        <th>Jenis Hidangan</th>
-                        <th>Deskripsi Hidangan</th>
-                        <th>Gambar Hidangan</th>
-                        <th>Harga Hidangan</th>
-                        <th>Stok Hidangan</th>
-                        <th>Aksi</th>
+                        <th>Keterangan</th>
+                        <th>Nomor Kamar</th>
+                        <th>Total Harga</th>
+                        <th>Email</th>
+                        <th  class="text-center">Status</th>
+                        <th  class="text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
+                    @foreach ($orderans as $no => $orderan)
+                    <tr>
+                        <form name="form" id="form-{{$orderan->id}}" action="{{route('dashboard.orderan.store')}}" method="post">
+                            @csrf
+                            <input type="hidden" name="id" value="{{$orderan->id}}" id="">
+                            <td>{{$no+1}}</td>
+                            <td>{{$orderan->nama_hidangan}}
+                                <input type="hidden" name="nama_hidangan" value="{{$orderan->nama_hidangan}}"/>
+                            </td>
+                            <td>{{$orderan->keterangan}}</td>
+                            <td>{{$orderan->no_kamar}}
+                                <input type="hidden" name="no_kamar" value="{{$orderan->no_kamar}}"/>
+                            </td>
+                            <td>{{$orderan->total_harga}}
+                                <input type="hidden" name="total_harga" value="{{$orderan->total_harga}}"/>
+                            </td>
+                            <td>{{$orderan->email}}
+                                <input type="hidden" name="email" value="{{$orderan->email}}"/>
+                            </td>
+                            <td><p class="badge badge-sm badge-info">Perlu Disetujui</p>
+                                <input type="hidden" name="status_order" value="selesai">
+                            </td>
+                            <td>
+                                <button type="button" onclick="order('{{$orderan->id}}')" id="data" class="btn-process-order btn btn-sm btn-success">Terima</button>
+                            </td>
+                        </form>
+                        </tr>
+                    @endforeach
 
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-@endsection
+@stop
 @push('js')
     <script>
-        $(function () {
-            var table = $(".myTable").DataTable({
-                processing: true,
-                ajax: "{{ route('dashboard.hidangan') }}",
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex'
-                    },
-                    {
-                        data: 'nama_hidangan',
-                        name: 'Nama Hidangan'
-                    },
-                    {
-                        data: 'jenis_hidangan',
-                        name: 'Jenis Hidangan'
-                    },
-                    {
-                        data: 'deskripsi_hidangan',
-                        name: 'Deskripsi Hidangan',
-                        "render": function (data) {
-                            var deskripsi = data.substr(0,50);
-                            return deskripsi;
-                        }
-                    },
-                    {
-                        data: 'gambar_hidangan',
-                        name: 'Gambar Hidangan',
-                        "render": function (data) {
-                            if (data !== null) {
-                                return '<img class="" src="storage/gambar_hidangan/' + data + '">';
-                            } else {
-                                return '[Gambar Tidak Tersedia]';
-                            }
-                        }
-                    },
-                    {
-                        data: 'harga_hidangan',
-                        name: 'Harga Hidangan'
-                    },
-                    {
-                        data: 'stok_hidangan',
-                        name: 'Stok Hidangan'
-                    },
-                    {
-                        data: 'aksi',
-                        name: 'Aksi'
-                    },
-                ],
-            });
+            function order(id) {
+              var form = event.target.form;
+                Swal.fire({
+                icon: 'question',
+                text: 'Anda Akan Memproses Orderan Ini?',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Proses!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                  if (result.isConfirmed) {
+                    form.submit();
+                  }
+              });
 
-            $(document).on('click', "#btnEditHidangan", function () {
-                let id = $(this).data('id');
-                $("#image-area").empty();
-                $.ajax({
-                    url: "{{ url('hidangan/edit') }}/" + id,
-                    type: 'get',
-                    dataType: 'json',
-                    success: function (res) {
-                        $('#nama_hidangan').val(res.nama_hidangan);
-                        $('#jenis_hidangan').append(`<option selected value="` + res
-                            .jenis_hidangan + `">` + res.jenis_hidangan + `</option>`);
-                        $('#harga_hidangan').val(res.harga_hidangan);
-                        $('#deskripsi_hidangan').val(res.deskripsi_hidangan);
-                        $('#id_hidangan').val(res.id);
-                        $('#old_gambar_hidangan').val(res.gambar_hidangan);
-                        $('#stok_hidangan').val(res.stok_hidangan);
-                        if (res.gambar_hidangan !== null) {
-                            $('#image-area').append(
-                                `<img src="` + baseurl + `/storage/gambar_hidangan/` +
-                                res.gambar_hidangan + `" width="200px"/>`
-                            );
-                        } else {
-                            $('#image-area').append(`[Belum Menggunggah Gambar]`);
-                        }
-                    },
-                });
-
-            });
-        });
-
+            };
     </script>
 @endpush

@@ -54,5 +54,6 @@ Route::middleware(['admin'])->group(function () {
 Route::middleware(['admin'])->group(function () {
     Route::controller(OrderanController::class)->group(function () {
         Route::get('/orderan', 'index')->name('dashboard.orderan');
+        Route::post('/orderan/store', 'store')->name('dashboard.orderan.store');
     });
 });

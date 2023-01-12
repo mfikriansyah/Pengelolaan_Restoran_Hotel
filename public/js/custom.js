@@ -1,14 +1,4 @@
-var cardDrop = document.getElementById('card-dropdown');
-var activeDropdown;
-cardDrop.addEventListener('click',function(){
-  var node;
-  for (var i = 0; i < this.childNodes.length-1; i++)
-    node = this.childNodes[i];
-    if (node.className === 'dropdown-select') {
-      node.classList.add('visible');
-       activeDropdown = node; 
-    };
-})
+
 
 window.onclick = function(e) {
   if (e.target.tagName === 'LI' && activeDropdown){
@@ -148,3 +138,14 @@ function getYear() {
 }
 
 getYear();
+var cardDrop = document.getElementById('card-dropdown');
+var activeDropdown;
+cardDrop.addEventListener('click',function(){
+  var node;
+  for (var i = 0; i < this.childNodes.length-1; i++)
+    node = this.childNodes[i];
+    if (node.className === 'dropdown-select') {
+      node.classList.add('visible');
+       activeDropdown = node; 
+    };
+})

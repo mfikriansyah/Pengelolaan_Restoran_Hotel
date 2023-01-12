@@ -47,19 +47,20 @@
                                         {{ $hidangan->deskripsi_hidangan }}
                                     </p>
                                     <div class="options">
-                                        <h6>
+                                        <h5>
                                             Rp. {{ $hidangan->harga_hidangan }}
-                                        </h6>
+                                        </h5>
                                         @if(Route::has('login'))
-                                            @auth 
-                                            <a href="{{ route('add.to.cart', $hidangan->id) }}" class="btn btn-outline-dark order_online add-to-cart"><i class="fas fa-shopping-cart"></i></a>
-                                            @else
-                                                <button class="btn btn-dark" type="button" data-toggle="modal" data-target="#modalLogin">
-                                                    <i class="fas fa-shopping-cart"></i>
-                                                </button>
-                                            @endauth
+                                        @auth 
+                                        <a href="{{ route('add.to.cart', $hidangan->id) }}" class="btn btn-outline-dark order_online add-to-cart"><i class="fas fa-shopping-cart"></i></a>
+                                        @else
+                                        <button class="btn btn-dark" type="button" data-toggle="modal" data-target="#modalLogin">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                        @endauth
                                         @endif
                                     </div>
+                                    Tersedia : {{ $hidangan->stok_hidangan }}
                                 </div>
                             </div>
                         </div>

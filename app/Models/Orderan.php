@@ -13,8 +13,8 @@ class Orderan extends Model
     // {
     //     return $this->hasMany(Hidangan::class, 'hidangan_id', 'id');
     // }
-    public function latestOrder()
-    {
-        return $this->hasOne(Order::class, 'hidangan_id', 'id')->latestOfMany();
-    }
+    // public function latestOrder()
+    // {
+    //     return $this->hasOne(Order::class, 'hidangan_id', 'id')->latestOfMany();
+    // }
 }

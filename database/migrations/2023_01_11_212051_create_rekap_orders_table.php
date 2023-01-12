@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHidangansTable extends Migration
+class CreateRekapOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateHidangansTable extends Migration
      */
     public function up()
     {
-        Schema::create('hidangans', function (Blueprint $table) {
+        Schema::create('rekap_orders', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_hidangan')->unique();
-            $table->char('jenis_hidangan', 50);
-            $table->string('deskripsi_hidangan')->nullable();
-            $table->char('gambar_hidangan', 150)->nullable();
-            $table->integer('harga_hidangan');
+            $table->char('no_kamar', 9);
+            $table->char('status_order', 7);
+            $table->char('nama_hidangan', 255);
+            $table->decimal('total_harga');
+            $table->char('email', 50);
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreateHidangansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hidangans');
+        Schema::dropIfExists('rekap_orders');
     }
 }
