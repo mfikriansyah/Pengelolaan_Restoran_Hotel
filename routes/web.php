@@ -62,6 +62,7 @@ Route::middleware(['admin'])->group(function () {
     Route::controller(RekapOrderController::class)->group(function () {
         Route::get('/rekap-orderan', 'index')->name('dashboard.rekapOrder');
         Route::get('/rekap-orderan/print', 'print')->name('dashboard.rekapOrder.print');
+        Route::get('/rekap-orderan/export', 'export')->name('dashboard.rekapOrder.export');
     });
 });
 // Route::get('/sentMail', function(){

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\RekapOrder;
 use PDF;
+use Excel;
+use App\Exports\RekapExport;
 
 class RekapOrderController extends Controller
 {
@@ -18,6 +20,10 @@ class RekapOrderController extends Controller
         $rekaps = RekapOrder::all();
         $pdf = PDF::loadview('rekapOrder.print', ['rekaps' => $rekaps]);
         return $pdf->download('rekap_orderan.pdf');
+    }
+    public function export()
+    {
+        return Excel::download(new RekapExport, 'rekap.xlsx');
     }
     
 }

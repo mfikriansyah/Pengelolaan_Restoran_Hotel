@@ -6,9 +6,13 @@
             <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                 <h3 class="font-weight-bold">Manage Rekap Order</h3>
                 <hr/>
-                <a href="{{route('dashboard.rekapOrder.print')}}" class="btn btn-sm btn-info btn-icon-text">
+                <a href="{{route('dashboard.rekapOrder.print')}}" target="_blank" class="btn btn-sm btn-info btn-icon-text">
                     Print PDF
                     <i class="ti-printer btn-icon-append"></i>
+                </a>
+                <a href="{{route('dashboard.rekapOrder.export')}}" target="_blank" class="btn btn-sm btn-success btn-icon-text">
+                    Export Excel
+                    <i class="mdi mdi-file-excel btn-icon-append"></i>
                 </a>
                 <hr />
             </div>
