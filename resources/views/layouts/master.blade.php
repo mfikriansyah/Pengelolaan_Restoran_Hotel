@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="{{asset('vendors/feather/feather.css')}}">
   <link rel="stylesheet" href="{{asset('vendors/ti-icons/css/themify-icons.css')}}">
   <link rel="stylesheet" href="{{asset('vendors/css/vendor.bundle.base.css')}}">
+  <link rel="stylesheet" href="{{asset('vendors/font-awesome/css/font-awesome.min.css')}}">
+  <link rel="stylesheet" href="{{asset('vendors/mdi/css/materialdesignicons.min.css')}}">
   <!-- endinject -->
   <!-- Plugin css for this page -->
   <link rel="stylesheet" href="{{asset('vendors/ti-icons/css/themify-icons.css')}}">

@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HidanganController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderanController;
+use App\Http\Controllers\RekapOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,7 +58,13 @@ Route::middleware(['admin'])->group(function () {
         Route::post('/orderan/store', 'store')->name('dashboard.orderan.store');
     });
 });
-Route::get('/sentMail', function(){
-    $orderan = App\Models\Orderan::first();
-    return new App\Mail\Invoice($orderan);
+Route::middleware(['admin'])->group(function () {
+    Route::controller(RekapOrderController::class)->group(function () {
+        Route::get('/rekap-orderan', 'index')->name('dashboard.rekapOrder');
+        Route::get('/rekap-orderan/print', 'print')->name('dashboard.rekapOrder.print');
     });
+});
+// Route::get('/sentMail', function(){
+//     $orderan = App\Models\Orderan::first();
+//     return new App\Mail\Invoice($orderan);
+//     });
