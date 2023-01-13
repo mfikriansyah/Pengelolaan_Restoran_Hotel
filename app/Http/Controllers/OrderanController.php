@@ -7,6 +7,8 @@ use App\Models\Orderan;
 use Illuminate\Support\Arr;
 use Validator;
 use App\Models\RekapOrder;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Invoice;
 
 class OrderanController extends Controller
 {
@@ -37,8 +39,9 @@ class OrderanController extends Controller
         ]);
         if ($validator->passes()) {
             $input  = $request->all();
+            Mail::to($request->email)->send(new Invoice(Orderan::where('id', $request->id)->first()));
             //dd(Arr::except($input,['id']));
-            RekapOrder::create(Arr::except($input,['id']));
+            RekapOrder::create(Arr::except($input,['id','harga']));
             Orderan::where('id', $request->id)->delete();
             $notification = array(
                 'message' => 'Berhasil Memproses',

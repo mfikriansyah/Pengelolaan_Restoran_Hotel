@@ -23,6 +23,7 @@
                         <th>Gambar Hidangan</th>
                         <th>Harga Hidangan</th>
                         <th>Stok Hidangan</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -82,6 +83,17 @@
                         name: 'Stok Hidangan'
                     },
                     {
+                        data: 'status',
+                        name: 'Status',
+                        "render": function (data) {
+                            if (data == 0) {
+                                return '<p class="badge badge-sm badge-danger">Nonaktif</p>';
+                            } else {
+                                return '<p class="badge badge-sm badge-success">Aktif</p>';
+                            }
+                        }
+                    },
+                    {
                         data: 'aksi',
                         name: 'Aksi'
                     },
@@ -99,6 +111,11 @@
                         $('#nama_hidangan').val(res.nama_hidangan);
                         $('#jenis_hidangan').append(`<option selected value="` + res
                             .jenis_hidangan + `">` + res.jenis_hidangan + `</option>`);
+                        if(res.status == 1){
+                            $('#status').append(`<option selected value="1">Aktif</option>`);
+                        }else{
+                            $('#status').append(`<option selected value="0">Nonaktif</option>`);
+                        }
                         $('#harga_hidangan').val(res.harga_hidangan);
                         $('#deskripsi_hidangan').val(res.deskripsi_hidangan);
                         $('#id_hidangan').val(res.id);

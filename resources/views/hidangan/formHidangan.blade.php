@@ -30,3 +30,11 @@
     <label for="judul">Stok Hidangan Perhari</label>
     <input type="text" class="form-control" name="stok_hidangan" id="stok_hidangan" placeholder="Stok Hidangan Perhari" />
 </div>
+<div class="form-group">
+    <label for="judul">Status</label>
+    <br/>
+    <select name="status" id="status">
+        <option value="1" selected>Aktif</option>
+        <option value="0">Nonaktif</option>
+    </select>
+</div>
