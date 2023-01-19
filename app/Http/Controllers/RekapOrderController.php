@@ -10,20 +10,30 @@ use App\Exports\RekapExport;
 
 class RekapOrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data['rekaps'] = RekapOrder::all();
-        return view('rekapOrder.index')->with($data);
+        if($request->filled('tanggal')) {
+            $data['tanggal'] = $request->get('tanggal');
+            $data['rekaps'] = RekapOrder::whereDate('created_at', $request->get('tanggal'))->get();
+            return view('rekapOrder.index')->with($data);
+        }else{
+            $data['rekaps'] = RekapOrder::all();
+            return view('rekapOrder.index')->with($data);
+        }
     }
-    public function print()
+    public function print($tanggal = null)
     {
-        $rekaps = RekapOrder::all();
+        if($tanggal != null) {
+            $rekaps = RekapOrder::whereDate('created_at', $tanggal)->get();
+        }else{
+            $rekaps = RekapOrder::all();
+        }
         $pdf = PDF::loadview('rekapOrder.print', ['rekaps' => $rekaps]);
-        return $pdf->download('rekap_orderan.pdf');
+        return $pdf->download('rekap_orderan_'.$tanggal.'.pdf');
     }
-    public function export()
+    public function export($tanggal = null)
     {
-        return Excel::download(new RekapExport, 'rekap.xlsx');
+        return Excel::download(new RekapExport($tanggal), 'rekap_orderan_'.$tanggal.'.xlsx');
     }
     
 }

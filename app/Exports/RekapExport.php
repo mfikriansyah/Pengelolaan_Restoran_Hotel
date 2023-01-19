@@ -9,12 +9,18 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class RekapExport implements FromArray,WithHeadings, ShouldAutoSize
 {
+    private $tanggal;
+
+    public function __construct($tanggal)
+    {
+        $this->tanggal = $tanggal;
+    }
     /**
     * @return \Illuminate\Support\Collection
     */
     public function array(): array
     {
-        return RekapOrder::getDataRekap();
+        return RekapOrder::getDataRekap($this->tanggal);
     }
     // public function collection()
     // {

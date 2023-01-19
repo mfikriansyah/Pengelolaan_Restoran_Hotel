@@ -10,9 +10,13 @@ class RekapOrder extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public static function getDataRekap()
+    public static function getDataRekap($tanggal)
     {
-        $rekaps = RekapOrder::all();
+        if($tanggal != null) {
+            $rekaps = RekapOrder::whereDate('created_at', $tanggal)->get();
+        }else{
+            $rekaps = RekapOrder::all();
+        }
         $rekaps_filter = [];
 
         foreach($rekaps as $no => $rekap){

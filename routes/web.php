@@ -36,14 +36,14 @@ Route::controller(UserController::class)->group(function () {
         });
 });
 
-Route::middleware(['admin'])->group(function () {
+Route::middleware(['admin', 'auth'])->group(function () {
     Route::prefix('dashboard')->group(function () {
             Route::controller(DashboardController::class)->group(function () {
                 Route::get('/', 'index')->name('dashboard.index');
             });
         });
 });
-Route::middleware(['admin'])->group(function () {
+Route::middleware(['admin', 'auth'])->group(function () {
     Route::controller(HidanganController::class)->group(function () {
         Route::get('/hidangan', 'index')->name('dashboard.hidangan');
         Route::post('/hidangan/store', 'store')->name('dashboard.hidangan.store');
@@ -52,20 +52,16 @@ Route::middleware(['admin'])->group(function () {
         Route::delete('/hidangan/delete/{id}', 'delete')->name('dashboard.hidangan.delete');
     });
 });
-Route::middleware(['admin'])->group(function () {
+Route::middleware(['admin', 'auth'])->group(function () {
     Route::controller(OrderanController::class)->group(function () {
         Route::get('/orderan', 'index')->name('dashboard.orderan');
         Route::post('/orderan/store', 'store')->name('dashboard.orderan.store');
     });
 });
-Route::middleware(['admin'])->group(function () {
+Route::middleware(['admin', 'auth'])->group(function () {
     Route::controller(RekapOrderController::class)->group(function () {
         Route::get('/rekap-orderan', 'index')->name('dashboard.rekapOrder');
-        Route::get('/rekap-orderan/print', 'print')->name('dashboard.rekapOrder.print');
-        Route::get('/rekap-orderan/export', 'export')->name('dashboard.rekapOrder.export');
+        Route::get('/rekap-orderan/print/{tanggal?}', 'print')->name('dashboard.rekapOrder.print');
+        Route::get('/rekap-orderan/export/{tanggal?}', 'export')->name('dashboard.rekapOrder.export');
     });
 });
-// Route::get('/sentMail', function(){
-//     $orderan = App\Models\Orderan::first();
-//     return new App\Mail\Invoice($orderan);
-//     });

@@ -124,40 +124,9 @@
     @stack('js')
     <script>
       $(function(){
+        
+        $(document).on("click", ".btn-hapus", function (e) {
         var table = $("#table-data").DataTable();
-        $(document).on("submit", "form", function (e) {
-                e.preventDefault();
-                $.ajax({
-                    url: $(this).attr("action"),
-                    type: $(this).attr("method"),
-                    dataType: "JSON",
-                    data: new FormData(this),
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    success: function (response) {
-                        if ($.isEmptyObject(response.error)) {
-                            toast('success', response.success);
-                            $(".myForm")[0].reset();
-                            $(".myModal").modal("hide");
-                            table.ajax.reload(null, false);
-                        } else {
-                            toast('errors', response.error)
-                            // printErrorMsg(response.error);
-                        }
-
-                    }
-                });
-
-            });
-            // function printErrorMsg (msg) {
-            //     $(".print-error-msg").find("ul").html('');
-            //     $(".print-error-msg").css('display','block');
-            //     $.each( msg, function( key, value ) {
-            //         $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
-            //     });
-            // }
-      $(document).on("click", ".btn-hapus", function (e) {
                 e.preventDefault();
                 Swal.fire({
                 icon: 'warning',
